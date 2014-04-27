@@ -59,11 +59,15 @@ public class SpawnerChangerGUIListeners implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
 	public void onBreakSpawner(BlockBreakEvent event) 
 	{
-		if(event.getBlock().getType() == Material.MOB_SPAWNER && event.getPlayer().getGameMode()!= GameMode.CREATIVE 
-				&& event.getPlayer().hasPermission("spawnerchangergui.recoveronbreak"))
+    	Block b = event.getBlock();
+    	Player p = event.getPlayer();
+		if(b != null && b.getType() == Material.MOB_SPAWNER && p.getGameMode()!= GameMode.CREATIVE)
 		{
-			Location blockLoc = event.getBlock().getLocation();
-			event.getPlayer().getWorld().dropItem(blockLoc, new ItemStack(Material.MOB_SPAWNER, 1));
+			if(p.hasPermission("spawnerchangergui.recoveronbreak"))
+			{
+				Location blockLoc = event.getBlock().getLocation();
+				p.getWorld().dropItem(blockLoc, new ItemStack(Material.MOB_SPAWNER, 1));
+			}
 		}
 	}
     
@@ -111,21 +115,4 @@ public class SpawnerChangerGUIListeners implements Listener {
             }
         }
     }
-    
-    @EventHandler(priority = EventPriority.HIGH)
-	public void onBlockBreak(BlockBreakEvent event) 
-	{
-		if(event.getBlock().getType() == Material.MOB_SPAWNER)
-		{
-			if(event.getPlayer().getGameMode()!= GameMode.CREATIVE)
-			{
-				if(event.getPlayer().hasPermission("spawnerchangergui.recoveronbreak"))
-				{
-					Location blockLoc = event.getBlock().getLocation();
-					event.getPlayer().getWorld().dropItem(blockLoc, new ItemStack(Material.MOB_SPAWNER, 1));
-			
-				}
-			}
-		}
-	}
 }

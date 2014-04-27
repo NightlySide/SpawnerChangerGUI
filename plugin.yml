@@ -1,6 +1,6 @@
 author: NightlySide
 main: net.nightlyside.spawnerchanger.SpawnerChangerGUI
-version: '1.1'
+version: '1.1.1'
 name: SpawnerChangerGUI
 description: "Simple & easy mobspawner modification GUI."
 softdepend: [Vault]
