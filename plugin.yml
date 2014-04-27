@@ -3,7 +3,7 @@ main: net.nightlyside.spawnerchanger.SpawnerChangerGUI
 version: '1.1.1'
 name: SpawnerChangerGUI
 description: "Simple & easy mobspawner modification GUI."
-softdepend: [Vault]
+softdepend: [Vault, WorldGuard]
 commands:
   spawnerchangergui:
     description: Reload SpawnerChangerGUI.

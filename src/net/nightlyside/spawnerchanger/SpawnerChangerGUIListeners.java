@@ -35,7 +35,10 @@ public class SpawnerChangerGUIListeners implements Listener {
             
             if(b != null && b.getType() == Material.MOB_SPAWNER && p.hasPermission("spawnerchangergui.open")) {
                 event.setCancelled(true);
-               
+                if(!SpawnerChangerGUI.canOpenAtLoc(p, b.getLocation())) {
+                    p.sendMessage("§cYou are not allowed to edit this spawner!");
+                    return;
+                }
                 if(plugin.getConfig().getBoolean("Settings.SneakToOpen") && p.isSneaking()) {
                 	plugin.openGUI((CreatureSpawner)b.getState(), p);
                 } else if(plugin.getConfig().getBoolean("Settings.SneakToOpen") == false && !p.isSneaking()) {

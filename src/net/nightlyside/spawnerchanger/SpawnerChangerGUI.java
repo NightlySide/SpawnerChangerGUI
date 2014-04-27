@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
@@ -18,11 +19,19 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.bukkit.BukkitPlayer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+
 public class SpawnerChangerGUI extends JavaPlugin {
 	protected Economy econ = null;
 	protected static final Logger log = Logger.getLogger("Minecraft");
 	public static final Set<String> openGUIs = new HashSet<>();
+	protected static WorldGuardPlugin worldguard = null;
 	protected boolean isEconEnabled = true;
+	protected boolean isWorldGuardEnabled = true;
 	
 	@Override
     public void onDisable() {
@@ -34,9 +43,9 @@ public class SpawnerChangerGUI extends JavaPlugin {
 	{
 		this.saveDefaultConfig();
 	    if(!setupEconomy() /*|| !config.isEconActivated()*/)
-	    {
 	    	this.isEconEnabled = false;
-	    }
+	    if(!setupWorldguard())
+	    	this.isWorldGuardEnabled = false;
 	    getServer().getPluginManager().registerEvents(new SpawnerChangerGUIListeners(this), this);
 	    log.info(String.format("[%s] - Enabled!", getDescription().getName()));
 	}
@@ -55,7 +64,19 @@ public class SpawnerChangerGUI extends JavaPlugin {
 			return false;
 		}
 		econ = rsp.getProvider();
+		Logger.getLogger("Minecraft").log(Level.INFO, "[SpawnerGUI] Vault hooked.");
 		return econ != null;
+	}
+	
+	private boolean setupWorldguard()
+	{
+		if (getServer().getPluginManager().getPlugin("WorldGuard") == null)
+		{
+			return false;
+		}
+		worldguard = (WorldGuardPlugin)getServer().getPluginManager().getPlugin("WorldGuard");
+        Logger.getLogger("Minecraft").log(Level.INFO, "[SpawnerChangerGUI] WorldGuard hooked.");
+        return worldguard != null;
 	}
 	
 	@Override
@@ -121,6 +142,22 @@ public class SpawnerChangerGUI extends JavaPlugin {
     
     public boolean noAccess(Player p, Spawnable type) {
         return !p.hasPermission("spawnerchangergui.edit.*") && !p.hasPermission("spawnerchangergui.edit." + type.getName().toLowerCase());
+    }
+    
+    public static boolean canOpenAtLoc(Player p, Location loc) {
+        if(worldguard != null && !p.isOp()) {
+            RegionManager r = worldguard.getRegionManager(loc.getWorld());
+            
+            if(r != null) {
+                ApplicableRegionSet regions = r.getApplicableRegions(loc);
+                LocalPlayer lp = new BukkitPlayer(worldguard, p);
+                
+                if(!regions.isOwnerOfAll(lp) && !regions.isMemberOfAll(lp)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     
     @SuppressWarnings("deprecation")
