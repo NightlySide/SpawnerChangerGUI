@@ -52,10 +52,20 @@ public class SpawnerChangerGUIListeners implements Listener {
         Player p = event.getPlayer();
         if(b != null && b.getType() == Material.MOB_SPAWNER && p.hasPermission("spawnerchangergui.open"))
         {
-        	event.setCancelled(true);
         	plugin.openGUI((CreatureSpawner)b.getState(), p);
         }
     }
+    
+    @EventHandler(priority = EventPriority.HIGH)
+	public void onBreakSpawner(BlockBreakEvent event) 
+	{
+		if(event.getBlock().getType() == Material.MOB_SPAWNER && event.getPlayer().getGameMode()!= GameMode.CREATIVE 
+				&& event.getPlayer().hasPermission("spawnerchangergui.recoveronbreak"))
+		{
+			Location blockLoc = event.getBlock().getLocation();
+			event.getPlayer().getWorld().dropItem(blockLoc, new ItemStack(Material.MOB_SPAWNER, 1));
+		}
+	}
     
     @EventHandler
     public void handleClick(SpawnerChangerClickEvent event) {
@@ -74,7 +84,7 @@ public class SpawnerChangerGUIListeners implements Listener {
         } else {
             for(Spawnable e : Spawnable.values()) {
                 if(clicked.equalsIgnoreCase(e.getName().toLowerCase())) {
-                    p.playSound(p.getLocation(), Sound.NOTE_PLING, 1, 1);
+                    p.playSound(p.getLocation(), Sound.CLICK, 1, 1);
 
                     if(!plugin.noAccess(p, e)) {
                         if(plugin.econ != null && !p.hasPermission("spawnerchangergui.eco.bypass.*")) {
