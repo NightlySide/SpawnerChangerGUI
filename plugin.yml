@@ -19,3 +19,5 @@ permissions:
     default: op
   spawnerchangergui.reload:
     default: op
+  spawnerchangergui.openonclick:
+    default: true

@@ -15,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +29,7 @@ public class SpawnerChangerGUIListeners implements Listener {
 	
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void handleInteract(PlayerInteractEvent event) {
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().hasPermission("spawnerchangergui.openonclick")) {
             Block b = event.getClickedBlock();
             Player p = event.getPlayer();
             
@@ -41,6 +42,18 @@ public class SpawnerChangerGUIListeners implements Listener {
                 	plugin.openGUI((CreatureSpawner)b.getState(), p);
                 }
             }
+        }
+    }
+    
+    @EventHandler
+    public void onPlaceSpawner(BlockPlaceEvent event)
+    {
+    	Block b = event.getBlockPlaced();
+        Player p = event.getPlayer();
+        if(b != null && b.getType() == Material.MOB_SPAWNER && p.hasPermission("spawnerchangergui.open"))
+        {
+        	event.setCancelled(true);
+        	plugin.openGUI((CreatureSpawner)b.getState(), p);
         }
     }
     
