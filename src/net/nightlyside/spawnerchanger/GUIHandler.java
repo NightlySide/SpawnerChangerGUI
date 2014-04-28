@@ -3,11 +3,13 @@ package net.nightlyside.spawnerchanger;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -19,12 +21,15 @@ public class GUIHandler implements Listener{
     private final int size;
     private ItemStack[] items;
     private CreatureSpawner spawner;
+    private boolean isGUIBlockPlaced;
+    private boolean isActionCanceled;
     
-    public GUIHandler(String name, int size, CreatureSpawner spawner) {
+    public GUIHandler(String name, int size, CreatureSpawner spawner, boolean isGUIBlockPlaced) {
         this.name = name;
         this.size = size;
         this.items = new ItemStack[size];
         this.spawner = spawner;
+        this.isGUIBlockPlaced = isGUIBlockPlaced;
         Bukkit.getPluginManager().registerEvents(this, Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI"));
     }
     
@@ -55,17 +60,24 @@ public class GUIHandler implements Listener{
             if(slot >= 0 && slot < size && items[slot] != null) {
             	SpawnerChangerClickEvent e = new SpawnerChangerClickEvent(slot, (Player)event.getWhoClicked(), spawner);
                 Bukkit.getPluginManager().callEvent(e);
-
+                
                 if(e.willClose()) {
                     event.getWhoClicked().getOpenInventory().close();
                     SpawnerChangerGUI.eatGUIs();
                 }
             }
+            if(event.getAction().equals(InventoryAction.NOTHING))
+            	isActionCanceled = true;
         }
     }
     
     @EventHandler
     public void handleClose(InventoryCloseEvent event) {
+    	if(isGUIBlockPlaced && isActionCanceled)
+    	{
+    		this.spawner.getBlock().breakNaturally();
+    		event.getPlayer().getInventory().addItem(new ItemStack(Material.MOB_SPAWNER, 1));
+    	}
         Inventory inv = event.getInventory();
         
         if(inv.getName().equals(name)) {
