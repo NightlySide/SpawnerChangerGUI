@@ -37,7 +37,6 @@ public class SpawnerChangerGUI extends JavaPlugin {
 	
 	@Override
     public void onDisable() {
-		this.saveLangConfig();
 		log.log(Level.INFO, "[SpawnerChangerGUI] Version {0} disabled.", getDescription().getVersion());
     }
 	
@@ -133,13 +132,13 @@ public class SpawnerChangerGUI extends JavaPlugin {
                 if(sender.hasPermission("spawnerchangergui.reload")) {
                     this.reloadConfig();
                     this.reloadLangConfig();
-                    sender.sendMessage(this.getLangConfig().getString("reloadMessage"));
+                    sender.sendMessage(this.getLangConfig().getString("reloadMessage").replace("&","§"));
                 } else {
-                    sender.sendMessage(this.getLangConfig().getString("notEnoughPerm"));
+                    sender.sendMessage(this.getLangConfig().getString("notEnoughPerm").replace("&","§"));
                 }
             } else {
                 reloadConfig();
-                sender.sendMessage(this.getLangConfig().getString("reloadMessage"));
+                sender.sendMessage(this.getLangConfig().getString("reloadMessage").replace("&","§"));
             }
             return true;
         }
@@ -154,17 +153,17 @@ public class SpawnerChangerGUI extends JavaPlugin {
         for(Spawnable e : Spawnable.values()) {
             if(getConfig().getBoolean("Settings.RemoveNoAccessEggs") && noAccess(p, e)) continue;
             double price = getPrice(e);
-            String editLine = this.getLangConfig().getString("setTo") + " §a" + e.getName();
-            String priceLine = price > 0.0 ? "§e" + price : this.getLangConfig().getString("priceFree");
-            String accessLine = noAccess(p, e) ? this.getLangConfig().getString("noAccess") : this.getLangConfig().getString("yesAccess");
+            String editLine = this.getLangConfig().getString("setTo").replace("&","§") + " §a" + e.getName();
+            String priceLine = price > 0.0 ? "§e" + price : this.getLangConfig().getString("priceFree").replace("&","§");
+            String accessLine = noAccess(p, e) ? this.getLangConfig().getString("noAccess").replace("&","§") : this.getLangConfig().getString("yesAccess").replace("&","§");
             
-            priceLine += (p.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || p.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " §a§o("+ this.getLangConfig().getString("freeForYou") +")" : "";
+            priceLine += (p.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || p.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " §a§o("+ this.getLangConfig().getString("freeForYou").replace("&","§") +")" : "";
             
             if(econ != null && getConfig().getBoolean("Settings.ShowCostInLore")) {
                 if(getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, this.getLangConfig().getString("price") + " " + priceLine, accessLine);
+                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, this.getLangConfig().getString("price").replace("&","§") + " " + priceLine, accessLine);
                 } else {
-                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, this.getLangConfig().getString("price") + " " + priceLine);
+                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, this.getLangConfig().getString("price").replace("&","§") + " " + priceLine);
                 }
             } else {
                 if(getConfig().getBoolean("Settings.ShowAccessInLore")) {
@@ -177,8 +176,8 @@ public class SpawnerChangerGUI extends JavaPlugin {
         }
         
         if(getConfig().getBoolean("Settings.ShowBalanceIcon")) {
-            String s = econ != null ? this.getLangConfig().getString("yourBalance") + " §e" + Math.round(econ.getBalance(p.getName()) * 100.0) / 100.0 : "§cEconomy is not enabled!";
-            gui.setItem(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "§b"+this.getLangConfig().getString("balance"), s);
+            String s = econ != null ? this.getLangConfig().getString("yourBalance").replace("&","§") + " §e" + Math.round(econ.getBalance(p.getName()) * 100.0) / 100.0 : "§cEconomy is not enabled!";
+            gui.setItem(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "§b"+this.getLangConfig().getString("balance").replace("&","§"), s);
         }
         gui.open(p);
         openGUIs.add(p.getName());
@@ -197,7 +196,7 @@ public class SpawnerChangerGUI extends JavaPlugin {
         for(String s : openGUIs) {
             if(Bukkit.getOfflinePlayer(s).isOnline()) {
                 Bukkit.getPlayerExact(s).getOpenInventory().close();
-                Bukkit.getPlayerExact(s).sendMessage(((SpawnerChangerGUI) Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI")).getLangConfig().getString("forceCloseGUI"));
+                Bukkit.getPlayerExact(s).sendMessage(((SpawnerChangerGUI) Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI")).getLangConfig().getString("forceCloseGUI").replace("&","§"));
             }
         }
     }

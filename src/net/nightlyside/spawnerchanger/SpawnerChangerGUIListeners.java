@@ -38,7 +38,7 @@ public class SpawnerChangerGUIListeners implements Listener {
                 if(plugin.worldguard != null)
                 {
 	                if(!plugin.worldguardhook.canOpenAtLoc(p, b.getLocation())) {
-	                    p.sendMessage(plugin.getLangConfig().getString("notEnoughPerm"));
+	                    p.sendMessage(plugin.getLangConfig().getString("notEnoughPerm").replace("&","§"));
 	                    return;
 	                }
                 }
@@ -83,7 +83,7 @@ public class SpawnerChangerGUIListeners implements Listener {
         CreatureSpawner spawner = event.getSpawner();
         
         if(spawner.getBlock().getType() != Material.MOB_SPAWNER) {
-            p.sendMessage(plugin.getLangConfig().getString("blockNotValidAnymore") + " (§7" + spawner.getBlock().getType().name().toLowerCase() + "§c)");
+            p.sendMessage(plugin.getLangConfig().getString("blockNotValidAnymore").replace("&","§") + " (§7" + spawner.getBlock().getType().name().toLowerCase() + "§c)");
             return;
         }
         String clicked = ChatColor.stripColor(event.getItem().getItemMeta().getDisplayName().toLowerCase());
@@ -102,20 +102,20 @@ public class SpawnerChangerGUIListeners implements Listener {
 
                             if(price > 0.0) {
                                 if(plugin.econ.has(p.getName(), price)) {
-                                	p.sendMessage(plugin.getLangConfig().getString("takeMoney").replace("%money%", String.valueOf(price)));
+                                	p.sendMessage(plugin.getLangConfig().getString("takeMoney").replace("&","§").replace("%money%", String.valueOf(price)));
                                     plugin.econ.withdrawPlayer(p.getName(), price);
                                 } else {
-                                	p.sendMessage(plugin.getLangConfig().getString("notEnoughMoney").replace("%money%", String.valueOf(price)));
+                                	p.sendMessage(plugin.getLangConfig().getString("notEnoughMoney").replace("&","§").replace("%money%", String.valueOf(price)));
                                     return;
                                 }
                             }
                         }
                         spawner.setSpawnedType(e.getType());
                         spawner.update(true);
-                        p.sendMessage(plugin.getLangConfig().getString("changeType").replace("%oldmob%", current.getName().toLowerCase()).replace("%newmob%", clicked));
+                        p.sendMessage(plugin.getLangConfig().getString("changeType").replace("&","§").replace("%oldmob%", current.getName().toLowerCase()).replace("%newmob%", clicked));
                         return;
                     }
-                    p.sendMessage(plugin.getLangConfig().getString("notEnoguhPerm"));
+                    p.sendMessage(plugin.getLangConfig().getString("notEnoguhPerm").replace("&","§"));
                     break;
                 }
             }
