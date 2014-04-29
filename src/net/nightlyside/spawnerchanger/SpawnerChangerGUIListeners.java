@@ -38,7 +38,7 @@ public class SpawnerChangerGUIListeners implements Listener {
                 if(plugin.worldguard != null)
                 {
 	                if(!plugin.worldguardhook.canOpenAtLoc(p, b.getLocation())) {
-	                    p.sendMessage("§cYou are not allowed to edit this spawner!");
+	                    p.sendMessage(plugin.getLangConfig().getString("notEnoughPerm"));
 	                    return;
 	                }
                 }
@@ -83,7 +83,7 @@ public class SpawnerChangerGUIListeners implements Listener {
         CreatureSpawner spawner = event.getSpawner();
         
         if(spawner.getBlock().getType() != Material.MOB_SPAWNER) {
-            p.sendMessage("§cThe spawner block is no longer valid! (§7" + spawner.getBlock().getType().name().toLowerCase() + "§c)");
+            p.sendMessage(plugin.getLangConfig().getString("blockNotValidAnymore") + " (§7" + spawner.getBlock().getType().name().toLowerCase() + "§c)");
             return;
         }
         String clicked = ChatColor.stripColor(event.getItem().getItemMeta().getDisplayName().toLowerCase());
@@ -102,20 +102,20 @@ public class SpawnerChangerGUIListeners implements Listener {
 
                             if(price > 0.0) {
                                 if(plugin.econ.has(p.getName(), price)) {
-                                    p.sendMessage("§7Charged §f" + price + " §7of your balance.");
+                                	p.sendMessage(plugin.getLangConfig().getString("takeMoney").replace("%money%", String.valueOf(price)));
                                     plugin.econ.withdrawPlayer(p.getName(), price);
                                 } else {
-                                    p.sendMessage("§cYou need at least §7" + price + " §cin balance to do this!");
+                                	p.sendMessage(plugin.getLangConfig().getString("notEnoughMoney").replace("%money%", String.valueOf(price)));
                                     return;
                                 }
                             }
                         }
                         spawner.setSpawnedType(e.getType());
                         spawner.update(true);
-                        p.sendMessage("§9Spawner type changed from §7" + current.getName().toLowerCase() + " §9to §7" + clicked + "§9!");
+                        p.sendMessage(plugin.getLangConfig().getString("changeType").replace("%oldmob%", current.getName().toLowerCase()).replace("%newmob%", clicked));
                         return;
                     }
-                    p.sendMessage("§cYou are not allowed to change to that type!");
+                    p.sendMessage(plugin.getLangConfig().getString("notEnoguhPerm"));
                     break;
                 }
             }

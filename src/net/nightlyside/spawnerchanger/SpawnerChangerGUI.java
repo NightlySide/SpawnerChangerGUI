@@ -1,5 +1,8 @@
 package net.nightlyside.spawnerchanger;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -12,6 +15,8 @@ import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,9 +32,12 @@ public class SpawnerChangerGUI extends JavaPlugin {
 	protected WorldGuardPlugin worldguard = null;
 	protected WorldGuardHook worldguardhook;
 	protected boolean isEconEnabled = true;
+	protected FileConfiguration langConfig;
+	protected File langConfigFile;
 	
 	@Override
     public void onDisable() {
+		this.saveLangConfig();
 		log.log(Level.INFO, "[SpawnerChangerGUI] Version {0} disabled.", getDescription().getVersion());
     }
 	
@@ -37,6 +45,8 @@ public class SpawnerChangerGUI extends JavaPlugin {
 	public void onEnable()
 	{
 		this.saveDefaultConfig();
+		this.saveDefaultLangConfig();
+		
 	    if(!setupEconomy() /*|| !config.isEconActivated()*/)
 	    	this.isEconEnabled = false;
 	    setupWorldGuard();
@@ -75,19 +85,61 @@ public class SpawnerChangerGUI extends JavaPlugin {
 		return worldguard != null;
 	}
 	
+	public void reloadLangConfig() {
+	    if (langConfigFile == null) {
+	    	langConfigFile = new File(getDataFolder(), "lang.yml");
+	    }
+	    langConfig = YamlConfiguration.loadConfiguration(langConfigFile);
+	 
+	    // Look for defaults in the jar
+	    InputStream defConfigStream = this.getResource("lang.yml");
+	    if (defConfigStream != null) {
+	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	        langConfig.setDefaults(defConfig);
+	    }
+	}
+	
+	public FileConfiguration getLangConfig() {
+	    if (langConfig == null) {
+	        reloadLangConfig();
+	    }
+	    return langConfig;
+	}
+	
+	public void saveLangConfig() {
+	    if (langConfig == null || langConfigFile == null) {
+	        return;
+	    }
+	    try {
+	        getLangConfig().save(langConfigFile);
+	    } catch (IOException ex) {
+	        getLogger().log(Level.SEVERE, "Could not save config to " + langConfigFile, ex);
+	    }
+	}
+	
+	public void saveDefaultLangConfig() {
+	    if (langConfigFile == null) {
+	    	langConfigFile = new File(getDataFolder(), "lang.yml");
+	    }
+	    if (!langConfigFile.exists()) {            
+	         this.saveResource("lang.yml", false);
+	     }
+	}
+	
 	@Override
     public boolean onCommand(final CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if(cmd.getName().equalsIgnoreCase("spawnerchangergui")||cmd.getName().equalsIgnoreCase("scgui")) {
             if(sender instanceof Player) {
                 if(sender.hasPermission("spawnerchangergui.reload")) {
                     this.reloadConfig();
-                    sender.sendMessage("§aSpawnerChangerGUI reloaded.");
+                    this.reloadLangConfig();
+                    sender.sendMessage(this.getLangConfig().getString("reloadMessage"));
                 } else {
-                    sender.sendMessage("§cYou do not have permission to do this!");
+                    sender.sendMessage(this.getLangConfig().getString("notEnoughPerm"));
                 }
             } else {
                 reloadConfig();
-                sender.sendMessage("SpawnerChangerGUI reloaded.");
+                sender.sendMessage(this.getLangConfig().getString("reloadMessage"));
             }
             return true;
         }
@@ -102,17 +154,17 @@ public class SpawnerChangerGUI extends JavaPlugin {
         for(Spawnable e : Spawnable.values()) {
             if(getConfig().getBoolean("Settings.RemoveNoAccessEggs") && noAccess(p, e)) continue;
             double price = getPrice(e);
-            String editLine = "§7Set to: §a" + e.getName();
-            String priceLine = price > 0.0 ? "§e" + price : "§aFree";
-            String accessLine = noAccess(p, e) ? "§7Access: §cNo" : "§7Access: §aYes";
+            String editLine = this.getLangConfig().getString("setTo") + " §a" + e.getName();
+            String priceLine = price > 0.0 ? "§e" + price : this.getLangConfig().getString("priceFree");
+            String accessLine = noAccess(p, e) ? this.getLangConfig().getString("noAccess") : this.getLangConfig().getString("yesAccess");
             
-            priceLine += (p.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || p.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " §a§o(Free for you)" : "";
+            priceLine += (p.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || p.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " §a§o("+ this.getLangConfig().getString("freeForYou") +")" : "";
             
             if(econ != null && getConfig().getBoolean("Settings.ShowCostInLore")) {
                 if(getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, "§7Price: " + priceLine, accessLine);
+                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, this.getLangConfig().getString("price") + " " + priceLine, accessLine);
                 } else {
-                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, "§7Price: " + priceLine);
+                    gui.setItem(j, e.getSpawnEgg(), "§6" + e.getName(), editLine, this.getLangConfig().getString("price") + " " + priceLine);
                 }
             } else {
                 if(getConfig().getBoolean("Settings.ShowAccessInLore")) {
@@ -125,8 +177,8 @@ public class SpawnerChangerGUI extends JavaPlugin {
         }
         
         if(getConfig().getBoolean("Settings.ShowBalanceIcon")) {
-            String s = econ != null ? "§aYour Balance: §e" + Math.round(econ.getBalance(p.getName()) * 100.0) / 100.0 : "§cEconomy is not enabled!";
-            gui.setItem(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "§bBalance", s);
+            String s = econ != null ? this.getLangConfig().getString("yourBalance") + " §e" + Math.round(econ.getBalance(p.getName()) * 100.0) / 100.0 : "§cEconomy is not enabled!";
+            gui.setItem(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "§b"+this.getLangConfig().getString("balance"), s);
         }
         gui.open(p);
         openGUIs.add(p.getName());
@@ -145,7 +197,7 @@ public class SpawnerChangerGUI extends JavaPlugin {
         for(String s : openGUIs) {
             if(Bukkit.getOfflinePlayer(s).isOnline()) {
                 Bukkit.getPlayerExact(s).getOpenInventory().close();
-                Bukkit.getPlayerExact(s).sendMessage("§cThe GUI was forced to close.");
+                Bukkit.getPlayerExact(s).sendMessage(((SpawnerChangerGUI) Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI")).getLangConfig().getString("forceCloseGUI"));
             }
         }
     }

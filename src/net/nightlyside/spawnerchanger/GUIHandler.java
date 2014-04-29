@@ -60,13 +60,13 @@ public class GUIHandler implements Listener{
             if(slot >= 0 && slot < size && items[slot] != null) {
             	SpawnerChangerClickEvent e = new SpawnerChangerClickEvent(slot, (Player)event.getWhoClicked(), spawner);
                 Bukkit.getPluginManager().callEvent(e);
+                isActionCanceled = false;
                 
                 if(e.willClose()) {
                     event.getWhoClicked().getOpenInventory().close();
                     SpawnerChangerGUI.eatGUIs();
                 }
             }
-            isActionCanceled = false;
         }
     }
     
