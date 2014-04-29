@@ -28,3 +28,6 @@ Don't forget to delete all configuration files in SpawnerChangerGUI folder when 
 * A GUI (Graphical User Interface) will open
 * Choose an egg which correspond with the mob you want to make spawn
 * That's it ! You can see the monster in the block has changed!!!
+
+##Dev' Builds
+* [SpawnerChangerGUI v1.2.1](https://github.com/NightlySide/SpawnerChangerGUI/blob/master/jar%20files/SpawnerChangerGUI%20-%20v1.2.1.jar?raw=true)
