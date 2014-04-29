@@ -4,6 +4,7 @@ Settings:
   ShowAccessInLore: true
   ShowCostInLore: true
   ShowBalanceIcon: true
+  RecoverIfNoEntitySelected: true
 MobPrices:
   Creeper: 100.0
   Skeleton: 100.0

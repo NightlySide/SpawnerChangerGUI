@@ -3,13 +3,13 @@ package net.nightlyside.spawnerchanger;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -22,7 +22,7 @@ public class GUIHandler implements Listener{
     private ItemStack[] items;
     private CreatureSpawner spawner;
     private boolean isGUIBlockPlaced;
-    private boolean isActionCanceled;
+    private boolean isActionCanceled = true;
     
     public GUIHandler(String name, int size, CreatureSpawner spawner, boolean isGUIBlockPlaced) {
         this.name = name;
@@ -66,17 +66,17 @@ public class GUIHandler implements Listener{
                     SpawnerChangerGUI.eatGUIs();
                 }
             }
-            if(event.getAction().equals(InventoryAction.NOTHING))
-            	isActionCanceled = true;
+            isActionCanceled = false;
         }
     }
     
     @EventHandler
     public void handleClose(InventoryCloseEvent event) {
-    	if(isGUIBlockPlaced && isActionCanceled)
+    	if(isGUIBlockPlaced && isActionCanceled && Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI").getConfig().getBoolean("Settings.RecoverIfNoEntitySelected"))
     	{
     		this.spawner.getBlock().breakNaturally();
-    		event.getPlayer().getInventory().addItem(new ItemStack(Material.MOB_SPAWNER, 1));
+    		if(event.getPlayer().getGameMode()!=GameMode.CREATIVE)
+    			event.getPlayer().getInventory().addItem(new ItemStack(Material.MOB_SPAWNER, 1));
     	}
         Inventory inv = event.getInventory();
         
