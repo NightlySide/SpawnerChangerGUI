@@ -1,5 +1,8 @@
 package net.nightlyside.spawnerchanger;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import net.nightlyside.spawnerchanger.SpawnerChangerGUI.Spawnable;
 
 import org.bukkit.ChatColor;
@@ -111,8 +114,12 @@ public class SpawnerChangerGUIListeners implements Listener {
                             }
                         }
                         spawner.setSpawnedType(e.getType());
+                        spawner.setDelay(spawner.getDelay()-99999);;
                         spawner.update(true);
                         p.sendMessage(plugin.getLangConfig().getString("changeType").replace("&","§").replace("%oldmob%", current.getName().toLowerCase()).replace("%newmob%", clicked));
+                        java.util.Date now = new Date();
+                        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        plugin.logInFile(format.format(now),event.getPlayer().getName(), event.getSpawner().getBlock().getLocation(), clicked);
                         return;
                     }
                     p.sendMessage(plugin.getLangConfig().getString("notEnoguhPerm").replace("&","§"));

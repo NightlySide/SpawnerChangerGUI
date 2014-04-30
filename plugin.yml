@@ -1,6 +1,6 @@
 author: NightlySide
 main: net.nightlyside.spawnerchanger.SpawnerChangerGUI
-version: '1.2.1'
+version: '1.2.3'
 name: SpawnerChangerGUI
 load: POSTWORLD
 description: "Simple & easy mobspawner modification GUI."

@@ -1,6 +1,7 @@
 package net.nightlyside.spawnerchanger;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
@@ -146,6 +148,7 @@ public class SpawnerChangerGUI extends JavaPlugin {
     }
 	
 	public void openGUI(CreatureSpawner spawner, Player p, boolean isBlockPlaced) {
+		spawner.setDelay(spawner.getDelay()+99999);
         Spawnable type = Spawnable.from(spawner.getSpawnedType());
         GUIHandler gui = new GUIHandler("Spawner Type: " + type.getName(), 45, spawner, isBlockPlaced);
         int j = 0;
@@ -283,4 +286,14 @@ public class SpawnerChangerGUI extends JavaPlugin {
             return null;
         }
     }
+
+	public void logInFile(String date, String playername, Location loc, String spawnertype) {
+		try {
+			FileWriter file = new FileWriter(new File(getDataFolder(),"log.txt"), true);
+			file.write(date+" | "+playername+" | spawner: x: "+loc.getBlockX()+" y: "+loc.getBlockY()+" z: "+loc.getBlockZ()+" | Type: "+spawnertype+"\r\n");
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -72,7 +72,8 @@ public class GUIHandler implements Listener{
     
     @EventHandler
     public void handleClose(InventoryCloseEvent event) {
-    	if(isGUIBlockPlaced && isActionCanceled && Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI").getConfig().getBoolean("Settings.RecoverIfNoEntitySelected"))
+    	if(isGUIBlockPlaced && isActionCanceled && event.getPlayer().hasPermission("spawnerchangergui.open")
+    			&& Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI").getConfig().getBoolean("Settings.RecoverIfNoEntitySelected"))
     	{
     		this.spawner.getBlock().breakNaturally();
     		if(event.getPlayer().getGameMode()!=GameMode.CREATIVE)
