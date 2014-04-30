@@ -47,6 +47,8 @@ public class SpawnerChangerGUI extends JavaPlugin {
 	{
 		this.saveDefaultConfig();
 		this.saveDefaultLangConfig();
+		this.reloadConfig();
+		this.reloadLangConfig();
 		
 	    if(!setupEconomy() /*|| !config.isEconActivated()*/)
 	    	this.isEconEnabled = false;
@@ -288,12 +290,15 @@ public class SpawnerChangerGUI extends JavaPlugin {
     }
 
 	public void logInFile(String date, String playername, Location loc, String spawnertype) {
-		try {
-			FileWriter file = new FileWriter(new File(getDataFolder(),"log.txt"), true);
-			file.write(date+" | "+playername+" | spawner: x: "+loc.getBlockX()+" y: "+loc.getBlockY()+" z: "+loc.getBlockZ()+" | Type: "+spawnertype+"\r\n");
-			file.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(this.getConfig().getBoolean("Settings.LogActions"))
+		{
+			try {
+				FileWriter file = new FileWriter(new File(getDataFolder(),"log.txt"), true);
+				file.write(date+" | "+playername+" | spawner: x: "+loc.getBlockX()+" y: "+loc.getBlockY()+" z: "+loc.getBlockZ()+" | Type: "+spawnertype+"\r\n");
+				file.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
