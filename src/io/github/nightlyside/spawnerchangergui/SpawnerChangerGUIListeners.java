@@ -1,9 +1,8 @@
-package net.nightlyside.spawnerchanger;
+package io.github.nightlyside.spawnerchangergui;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import net.nightlyside.spawnerchanger.SpawnerChangerGUI.Spawnable;
+import java.util.Vector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -22,6 +21,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import io.github.nightlyside.spawnerchangergui.SpawnerChangerGUI.Spawnable;
+
 public class SpawnerChangerGUIListeners implements Listener {
 	private SpawnerChangerGUI plugin = null;
 	
@@ -37,18 +38,25 @@ public class SpawnerChangerGUIListeners implements Listener {
             Player p = event.getPlayer();
             
             if(b != null && b.getType() == Material.MOB_SPAWNER && p.hasPermission("spawnerchangergui.open")) {
+            	
                 event.setCancelled(true);
                 if(plugin.worldguard != null)
                 {
 	                if(!plugin.worldguardhook.canOpenAtLoc(p, b.getLocation())) {
-	                    p.sendMessage(plugin.getLangConfig().getString("notEnoughPerm").replace("&","ง"));
+	                    p.sendMessage(plugin.getLangConfig().getString("notEnoughPerm").replace("&","ยง"));
 	                    return;
 	                }
                 }
-                if(plugin.getConfig().getBoolean("Settings.SneakToOpen") && p.isSneaking()) {
-                	plugin.openGUI((CreatureSpawner)b.getState(), p, false);
-                } else if(plugin.getConfig().getBoolean("Settings.SneakToOpen") == false && !p.isSneaking()) {
-                	plugin.openGUI((CreatureSpawner)b.getState(), p, false);
+                if (SpawnerChangerGUI.openGUIs.contains(p.getName())) {
+                	//p.sendMessage("Spawner already in use");
+                }
+                else
+                {
+	                if(plugin.getConfig().getBoolean("Settings.SneakToOpen") && p.isSneaking()) {
+	                	plugin.openGUI((CreatureSpawner)b.getState(), p, false);
+	                } else if(plugin.getConfig().getBoolean("Settings.SneakToOpen") == false && !p.isSneaking()) {
+	                	plugin.openGUI((CreatureSpawner)b.getState(), p, false);
+	                }
                 }
             }
         }
@@ -78,6 +86,11 @@ public class SpawnerChangerGUIListeners implements Listener {
 				p.getWorld().dropItem(blockLoc, new ItemStack(Material.MOB_SPAWNER, 1));
 			}
 		}
+		if (SpawnerChangerGUI.openGUIs.contains(p.getName()))
+		{
+			p.closeInventory();
+			SpawnerChangerGUI.openGUIs.remove(p.getName());
+		}
 	}
     
     @EventHandler
@@ -86,7 +99,7 @@ public class SpawnerChangerGUIListeners implements Listener {
         CreatureSpawner spawner = event.getSpawner();
         
         if(spawner.getBlock().getType() != Material.MOB_SPAWNER) {
-            p.sendMessage(plugin.getLangConfig().getString("blockNotValidAnymore").replace("&","ง") + " (ง7" + spawner.getBlock().getType().name().toLowerCase() + "งc)");
+            p.sendMessage(plugin.getLangConfig().getString("blockNotValidAnymore").replace("&","ยง") + " (ยง7" + spawner.getBlock().getType().name().toLowerCase() + "ยงc)");
             return;
         }
         String clicked = ChatColor.stripColor(event.getItem().getItemMeta().getDisplayName().toLowerCase());
@@ -97,7 +110,7 @@ public class SpawnerChangerGUIListeners implements Listener {
         } else {
             for(Spawnable e : Spawnable.values()) {
                 if(clicked.equalsIgnoreCase(e.getName().toLowerCase())) {
-                    p.playSound(p.getLocation(), Sound.CLICK, 1, 1);
+                    p.playSound(p.getLocation(), Sound.BLOCK_STONE_BUTTON_CLICK_ON, 1, 1);
 
                     if(!plugin.noAccess(p, e)) {
                         if(plugin.econ != null && !p.hasPermission("spawnerchangergui.eco.bypass.*")) {
@@ -105,24 +118,24 @@ public class SpawnerChangerGUIListeners implements Listener {
 
                             if(price > 0.0) {
                                 if(plugin.econ.has(p.getName(), price)) {
-                                	p.sendMessage(plugin.getLangConfig().getString("takeMoney").replace("&","ง").replace("%money%", String.valueOf(price)));
+                                	p.sendMessage(plugin.getLangConfig().getString("takeMoney").replace("&","ยง").replace("%money%", String.valueOf(price)));
                                     plugin.econ.withdrawPlayer(p.getName(), price);
                                 } else {
-                                	p.sendMessage(plugin.getLangConfig().getString("notEnoughMoney").replace("&","ง").replace("%money%", String.valueOf(price)));
+                                	p.sendMessage(plugin.getLangConfig().getString("notEnoughMoney").replace("&","ยง").replace("%money%", String.valueOf(price)));
                                     return;
                                 }
                             }
                         }
                         spawner.setSpawnedType(e.getType());
-                        spawner.setDelay(spawner.getDelay()-99999);;
+                        spawner.setDelay(spawner.getDelay()-99999);
                         spawner.update(true);
-                        p.sendMessage(plugin.getLangConfig().getString("changeType").replace("&","ง").replace("%oldmob%", current.getName().toLowerCase()).replace("%newmob%", clicked));
+                        p.sendMessage(plugin.getLangConfig().getString("changeType").replace("&","ยง").replace("%oldmob%", current.getName().toLowerCase()).replace("%newmob%", clicked));
                         java.util.Date now = new Date();
                         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                         plugin.logInFile(format.format(now),event.getPlayer().getName(), event.getSpawner().getBlock().getLocation(), clicked);
                         return;
                     }
-                    p.sendMessage(plugin.getLangConfig().getString("notEnoguhPerm").replace("&","ง"));
+                    p.sendMessage(plugin.getLangConfig().getString("notEnoguhPerm").replace("&","ยง"));
                     break;
                 }
             }

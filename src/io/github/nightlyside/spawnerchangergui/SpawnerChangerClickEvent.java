@@ -1,4 +1,4 @@
-package net.nightlyside.spawnerchanger;
+package io.github.nightlyside.spawnerchangergui;
 
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package net.nightlyside.spawnerchanger;
+package io.github.nightlyside.spawnerchangergui;
 
 import java.util.Arrays;
 
@@ -54,7 +54,8 @@ public class GUIHandler implements Listener{
     public void handleClick(InventoryClickEvent event) {
         if(event.getInventory().getName().equals(name)) {
             event.setCancelled(true);
-
+            if (event.isShiftClick()) return;
+            	
             int slot = event.getRawSlot();
 
             if(slot >= 0 && slot < size && items[slot] != null) {
@@ -63,7 +64,7 @@ public class GUIHandler implements Listener{
                 isActionCanceled = false;
                 
                 if(e.willClose()) {
-                    event.getWhoClicked().getOpenInventory().close();
+                    event.getWhoClicked().closeInventory();
                     SpawnerChangerGUI.eatGUIs();
                 }
             }

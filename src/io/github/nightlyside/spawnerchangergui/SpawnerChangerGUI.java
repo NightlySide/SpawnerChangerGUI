@@ -1,9 +1,10 @@
-package net.nightlyside.spawnerchanger;
+package io.github.nightlyside.spawnerchangergui;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -136,13 +137,13 @@ public class SpawnerChangerGUI extends JavaPlugin {
                 if(sender.hasPermission("spawnerchangergui.reload")) {
                     this.reloadConfig();
                     this.reloadLangConfig();
-                    sender.sendMessage(this.getLangConfig().getString("reloadMessage").replace("&","ง"));
+                    sender.sendMessage(this.getLangConfig().getString("reloadMessage").replace("&","ยง"));
                 } else {
-                    sender.sendMessage(this.getLangConfig().getString("notEnoughPerm").replace("&","ง"));
+                    sender.sendMessage(this.getLangConfig().getString("notEnoughPerm").replace("&","ยง"));
                 }
             } else {
                 reloadConfig();
-                sender.sendMessage(this.getLangConfig().getString("reloadMessage").replace("&","ง"));
+                sender.sendMessage(this.getLangConfig().getString("reloadMessage").replace("&","ยง"));
             }
             return true;
         }
@@ -158,31 +159,31 @@ public class SpawnerChangerGUI extends JavaPlugin {
         for(Spawnable e : Spawnable.values()) {
             if(getConfig().getBoolean("Settings.RemoveNoAccessEggs") && noAccess(p, e)) continue;
             double price = getPrice(e);
-            String editLine = this.getLangConfig().getString("setTo").replace("&","ง") + " งa" + e.getName();
-            String priceLine = price > 0.0 ? "งe" + price : this.getLangConfig().getString("priceFree").replace("&","ง");
-            String accessLine = noAccess(p, e) ? this.getLangConfig().getString("noAccess").replace("&","ง") : this.getLangConfig().getString("yesAccess").replace("&","ง");
+            String editLine = this.getLangConfig().getString("setTo").replace("&","ยง") + " ยงa" + e.getName();
+            String priceLine = price > 0.0 ? "ยงe" + price : this.getLangConfig().getString("priceFree").replace("&","ยง");
+            String accessLine = noAccess(p, e) ? this.getLangConfig().getString("noAccess").replace("&","ยง") : this.getLangConfig().getString("yesAccess").replace("&","ยง");
             
-            priceLine += (p.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || p.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " งaงo("+ this.getLangConfig().getString("freeForYou").replace("&","ง") +")" : "";
+            priceLine += (p.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || p.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " ยงaยงo("+ this.getLangConfig().getString("freeForYou").replace("&","ยง") +")" : "";
             
             if(econ != null && getConfig().getBoolean("Settings.ShowCostInLore")) {
                 if(getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setItem(j, e.getSpawnEgg(), "ง6" + e.getName(), editLine, this.getLangConfig().getString("price").replace("&","ง") + " " + priceLine, accessLine);
+                    gui.setItem(j, e.getSpawnEgg(), "ยง6" + e.getName(), editLine, this.getLangConfig().getString("price").replace("&","ยง") + " " + priceLine, accessLine);
                 } else {
-                    gui.setItem(j, e.getSpawnEgg(), "ง6" + e.getName(), editLine, this.getLangConfig().getString("price").replace("&","ง") + " " + priceLine);
+                    gui.setItem(j, e.getSpawnEgg(), "ยง6" + e.getName(), editLine, this.getLangConfig().getString("price").replace("&","ยง") + " " + priceLine);
                 }
             } else {
                 if(getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setItem(j, e.getSpawnEgg(), "ง6" + e.getName(), editLine, accessLine);
+                    gui.setItem(j, e.getSpawnEgg(), "ยง6" + e.getName(), editLine, accessLine);
                 } else {
-                    gui.setItem(j, e.getSpawnEgg(), "ง6" + e.getName(), editLine);
+                    gui.setItem(j, e.getSpawnEgg(), "ยง6" + e.getName(), editLine);
                 }
             }
             j++;
         }
         
         if(getConfig().getBoolean("Settings.ShowBalanceIcon")) {
-            String s = econ != null ? this.getLangConfig().getString("yourBalance").replace("&","ง") + " งe" + Math.round(econ.getBalance(p.getName()) * 100.0) / 100.0 : "งcEconomy is not enabled!";
-            gui.setItem(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "งb"+this.getLangConfig().getString("balance").replace("&","ง"), s);
+            String s = econ != null ? this.getLangConfig().getString("yourBalance").replace("&","ยง") + " ยงe" + Math.round(econ.getBalance(p.getName()) * 100.0) / 100.0 : "ยงcEconomy is not enabled!";
+            gui.setItem(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "ยงb"+this.getLangConfig().getString("balance").replace("&","ยง"), s);
         }
         gui.open(p);
         openGUIs.add(p.getName());
@@ -196,12 +197,11 @@ public class SpawnerChangerGUI extends JavaPlugin {
         return !p.hasPermission("spawnerchangergui.edit.*") && !p.hasPermission("spawnerchangergui.edit." + type.getName().toLowerCase());
     }
     
-    @SuppressWarnings("deprecation")
 	public static void eatGUIs() {
         for(String s : openGUIs) {
             if(Bukkit.getOfflinePlayer(s).isOnline()) {
-                Bukkit.getPlayerExact(s).getOpenInventory().close();
-                Bukkit.getPlayerExact(s).sendMessage(((SpawnerChangerGUI) Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI")).getLangConfig().getString("forceCloseGUI").replace("&","ง"));
+                Bukkit.getPlayer(s).closeInventory();
+                Bukkit.getPlayer(s).sendMessage(((SpawnerChangerGUI) Bukkit.getPluginManager().getPlugin("SpawnerChangerGUI")).getLangConfig().getString("forceCloseGUI").replace("&","ยง"));
             }
         }
     }
