@@ -1,11 +1,8 @@
 Settings:
-  SneakToOpen: false
   RemoveNoAccessEggs: true
   ShowAccessInLore: true
   ShowCostInLore: true
   ShowBalanceIcon: true
-  RecoverIfNoEntitySelected: true
-  LogActions: true
 MobPrices:
   Creeper: 100.0
   Skeleton: 100.0
@@ -14,13 +11,13 @@ MobPrices:
   Zombie: 100.0
   Slime: 100.0
   Ghast: 100.0
-  PigZombie: 100.0
+  Pig_Zombie: 100.0
   Enderman: 100.0
   CaveSpider: 100.0
   Silverfish: 100.0
   Blaze: 100.0
   MagmaCube: 100.0
-  EnderDragon: 100.0
+  Ender_Dragon: 100.0
   Wither: 100.0
   Bat: 100.0
   Witch: 100.0
@@ -31,17 +28,21 @@ MobPrices:
   Squid: 100.0
   Wolf: 100.0
   Mooshroom: 100.0
-  SnowGolem: 100.0
+  Snow_Golem: 100.0
   Ocelot: 100.0
-  IronGolem: 100.0
+  Iron_Golem: 100.0
   Horse: 100.0
   Villager: 100.0
   Boat: 100.0
   Minecart: 100.0
-  ChestMinecart: 100.0
-  FurnaceMinecart: 100.0
-  TntMinecart: 100.0
-  HopperMinecart: 100.0
-  MobSpawnerMinecart: 100.0
-  EnderCrystal: 100.0
-  ExperienceOrb: 100.0
+  Chest_Minecart: 100.0
+  Furnace_Minecart: 100.0
+  Tnt_Minecart: 100.0
+  Hopper_Minecart: 100.0
+  Ender_Crystal: 100.0
+  Experience_Orb: 100.
+  Elder_Guardian: 100.0
+  Evoker: 100.0
+  Llama: 100.0
+  Guardian: 100.0
+  Shulker: 100.0

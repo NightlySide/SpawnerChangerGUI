@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/alexandre/Téléchargements/BuildTools/Spigot/Spigot-API/target/spigot-api-1.11.2-R0.1-SNAPSHOT-shaded.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="https://hub.spigotmc.org/javadocs/spigot/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/alexandre/Téléchargements/BuildTools/worldguard-6.2.jar"/>
+	<classpathentry kind="lib" path="/home/alexandre/Téléchargements/BuildTools/worldedit-bukkit-6.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/alexandre/Téléchargements/BuildTools/Vault.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
