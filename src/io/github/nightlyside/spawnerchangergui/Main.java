@@ -37,7 +37,7 @@ public class Main extends JavaPlugin{
 	@Override
     public void onDisable() {
 		// Send a message to tell the plugin in disabled
-		log.info(String.format("version {} disabled", getDescription().getVersion()));
+		log.info(String.format("[%s] version %s disabled", getDescription().getName(), getDescription().getVersion()));
     }
 	
 	/*
@@ -66,7 +66,7 @@ public class Main extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(listeners, this);
 		
 		// Send a message to tell the plugin in enabled
-		log.info(String.format("version %s enabled", getDescription().getVersion()));
+		log.info(String.format("[%s] version %s enabled", getDescription().getName(), getDescription().getVersion()));
 	}
 	
 	public void setupEconomy()

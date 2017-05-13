@@ -3,6 +3,7 @@ package io.github.nightlyside.spawnerchangergui;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -103,9 +104,30 @@ public class GUI implements Listener {
 			// Get the clicked slot
 			int slot = event.getRawSlot();
 			
-			// Check if the slot exists and is not null
-			if (slot >= 0 && slot < size && items[slot] != null && event.getInventory().getItem(slot).getItemMeta().hasLore())
+			// If the player clicks the economy icon
+			if (slot == size-1)
 			{
+				return;
+			}
+			
+			// Check if the slot exists and is not null
+			if (slot >= 0 && slot < size-1 && items[slot] != null && event.getInventory().getItem(slot).getItemMeta().hasLore())
+			{
+				// if the player needs an egg to change the type
+				if (context.mainConfig.getConfig().getBoolean("Settings.ChickenEggRequired"))
+				{
+					boolean hasEgg = player.getInventory().containsAtLeast(new ItemStack(Material.EGG), 1);
+					if (!hasEgg)
+					{
+						player.sendMessage(context.langConfig.getConfig().getString("noeggininv").replace("&", "§"));
+						return;
+					}
+					else
+					{
+						Utils.consumeItem(player, 1, Material.EGG);
+					}
+				}
+				
 				int numberoflines = event.getInventory().getItem(slot).getItemMeta().getLore().size();
 				String mobid = event.getInventory().getItem(slot).getItemMeta().getLore().get(numberoflines-1).split(" ")[1];
 				SpawnTypes mobtype = SpawnTypes.fromID(Integer.valueOf(mobid));

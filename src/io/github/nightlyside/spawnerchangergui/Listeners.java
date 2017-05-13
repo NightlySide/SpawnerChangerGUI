@@ -55,17 +55,24 @@ public class Listeners implements Listener{
 	
 	@EventHandler
 	public void onBreakSpawner(BlockBreakEvent event) 
-	{
+	{	
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
     	
     	// Check if everything is fine
+    	if (!context.canOpenAtLoc(player, block.getLocation()))
+    	{
+    		event.setCancelled(true);
+    		return;
+    	}
     	if (block == null || block.getType() != Material.MOB_SPAWNER)
     		return;
     	if (player.getGameMode() == GameMode.CREATIVE)
     		return;
     	if (!player.hasPermission("spawnerchangergui.recoveronbreak"))
     		return;
+    	
+    	event.setExpToDrop(context.mainConfig.getConfig().getInt("Settings.DroppedXPonBreak"));
     	
     	// Setting dropped bloc caracteristics
 		ItemStack spawner = new ItemStack(Material.MOB_SPAWNER, 1);
