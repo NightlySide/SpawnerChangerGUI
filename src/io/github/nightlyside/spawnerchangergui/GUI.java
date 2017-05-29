@@ -86,6 +86,7 @@ public class GUI implements Listener {
 	/*
 	 *  Click item in GUI handler 
 	 */
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onClick(InventoryClickEvent event)
 	{
@@ -113,21 +114,24 @@ public class GUI implements Listener {
 			// Check if the slot exists and is not null
 			if (slot >= 0 && slot < size-1 && items[slot] != null && event.getInventory().getItem(slot).getItemMeta().hasLore())
 			{
-				// if the player needs an egg to change the type
-				if (context.mainConfig.getConfig().getBoolean("Settings.ChickenEggRequired"))
+				// if the player needs an item to change the type
+				if (context.mainConfig.getConfig().getBoolean("Settings.ItemRequirement.enabled"))
 				{
-					boolean hasEgg = player.getInventory().containsAtLeast(new ItemStack(Material.EGG), 1);
-					if (!hasEgg)
+					// Get the item's material and amount
+					Material reqItem = Material.getMaterial(context.mainConfig.getConfig().getInt("Settings.ItemRequirement.item_id"));
+					int amount = context.mainConfig.getConfig().getInt("Settings.ItemRequirement.amount");
+					
+					// Check and remove the required item
+					boolean hasItem = Utils.consumeItem(player, amount, reqItem);
+					if (!hasItem)
 					{
+						// If the player doesn't have the item
 						player.sendMessage(context.langConfig.getConfig().getString("noeggininv").replace("&", "§"));
 						return;
 					}
-					else
-					{
-						Utils.consumeItem(player, 1, Material.EGG);
-					}
 				}
 				
+				// Get the mobtype from the item
 				int numberoflines = event.getInventory().getItem(slot).getItemMeta().getLore().size();
 				String mobid = event.getInventory().getItem(slot).getItemMeta().getLore().get(numberoflines-1).split(" ")[1];
 				SpawnTypes mobtype = SpawnTypes.fromID(Integer.valueOf(mobid));

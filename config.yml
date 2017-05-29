@@ -1,10 +1,33 @@
+# -------------------- Spawner Changer GUI Config -------------------- #
+#                                                                      #
+#   author  : Nightltside                                              # 
+#   version : 1.5.5                                                    #
+#                                                                      #
+# -------------------------------------------------------------------- #
 Settings:
+  # Remove eggs from the GUI if the player hasn't the right permission
   RemoveNoAccessEggs: true
+  # Show player's permission in the lore of items
   ShowAccessInLore: true
+  # Show the cost of the change
   ShowCostInLore: true
+  # Show a skull in the bottom-right corner showing the player's balance
   ShowBalanceIcon: true
+  
+  # How many exp should be dropped when the spawner is broken (0 for nothing)
   DroppedXPonBreak: 100.0
-  ChickenEggRequired: true
+  # Does the player require a enchanted silktouch tool to get the spawner back
+  RequireSilkTouch: true
+  
+  # Does the player require an item to change the spawner's type
+  ItemRequirement:
+    enabled: false
+    item_id: 344
+    amount: 1
+    
+# Mob prices : the amount of money a player needs to pay in order to change 
+# the spawner's type (only if Vault is hooked, a.k.a. there is an economy
+# plugin on the server)
 MobPrices:
   Creeper: 100.0
   Skeleton: 100.0
@@ -18,7 +41,7 @@ MobPrices:
   CaveSpider: 100.0
   Silverfish: 100.0
   Blaze: 100.0
-  MagmaCube: 100.0
+  Magma_Cube: 100.0
   Ender_Dragon: 100.0
   Wither: 100.0
   Bat: 100.0

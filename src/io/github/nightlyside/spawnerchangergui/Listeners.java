@@ -6,6 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -53,11 +54,13 @@ public class Listeners implements Listener{
     	}
     }
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onBreakSpawner(BlockBreakEvent event) 
 	{	
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
+    	ItemStack tool = player.getItemInHand();
     	
     	// Check if everything is fine
     	if (!context.canOpenAtLoc(player, block.getLocation()))
@@ -86,7 +89,15 @@ public class Listeners implements Listener{
 		spawner.setItemMeta(meta);
 		//spawner.setDurability((short) mobtype.getId());
 		
-		player.getWorld().dropItem(block.getLocation(), spawner);
+		// If the player needs silktouch : drop only if it has the correct enchantment
+		boolean requireSilkTouch = context.mainConfig.getConfig().getBoolean("Settings.RequireSilkTouch");
+		player.sendMessage(String.valueOf(requireSilkTouch));
+		if (requireSilkTouch && tool.containsEnchantment(Enchantment.SILK_TOUCH))
+			player.getWorld().dropItem(block.getLocation(), spawner);
+		
+		// Else just drop the spawner
+		if (!requireSilkTouch)
+			player.getWorld().dropItem(block.getLocation(), spawner);
 				
 		// If the GUI is still open destroy it
 		if (Main.openGUIs.remove(player.getName()))

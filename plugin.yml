@@ -1,6 +1,6 @@
 author: NightlySide
 main: io.github.nightlyside.spawnerchangergui.Main
-version: '1.5.2'
+version: '1.5.5'
 name: SpawnerChangerGUI
 load: POSTWORLD
 description: "Simple & easy mobspawner modification GUI."
