@@ -118,7 +118,7 @@ public class Main extends JavaPlugin{
             if(Bukkit.getOfflinePlayer(s).isOnline()) {
             	// Close it and send a message
                 Bukkit.getPlayer(s).closeInventory();
-                Bukkit.getPlayer(s).sendMessage(langConfig.getConfig().getString("forceCloseGUI").replace("&","ยง"));
+                Bukkit.getPlayer(s).sendMessage(langConfig.getConfig().getString("forceCloseGUI").replace("&","ง"));
             }
         }
         // Then reset the list
@@ -140,16 +140,16 @@ public class Main extends JavaPlugin{
                     mainConfig.reloadConfig();
                     langConfig.reloadConfig();
                     // Tell the user the reload is completed
-                    sender.sendMessage(langConfig.getConfig().getString("reloadMessage").replace("&","ยง"));
+                    sender.sendMessage(langConfig.getConfig().getString("reloadMessage").replace("&","ง"));
                 } else {
                 	// Tell the user he hasn't the right permissions
-                    sender.sendMessage(langConfig.getConfig().getString("notEnoughPerm").replace("&","ยง"));
+                    sender.sendMessage(langConfig.getConfig().getString("notEnoughPerm").replace("&","ง"));
                 }
             } else {
             	// The sender is the console
                 reloadConfig();
                 // Tell the console the reload is complete
-                sender.sendMessage(langConfig.getConfig().getString("reloadMessage").replace("&","ยง"));
+                sender.sendMessage(langConfig.getConfig().getString("reloadMessage").replace("&","ง"));
             }
             return true;
         }
@@ -167,7 +167,7 @@ public class Main extends JavaPlugin{
 		// Debugging
 		//player.sendMessage(type.toString());
 		// Creating the GUI
-        GUI gui = new GUI("Spawner Type: " + type.getName(), 45, spawner, this);
+        GUI gui = new GUI(langConfig.getConfig().getString("guiTitle").replace("&","ง") + type.getName(), 45, spawner, this);
         
         // Filling the GUI
         int j = 0;
@@ -177,26 +177,26 @@ public class Main extends JavaPlugin{
             
             // Getting the price of the mob
             double price = mainConfig.getConfig().getDouble("MobPrices." + e.getName());
-            String editLine = langConfig.getConfig().getString("setTo").replace("&","ยง") + " ยงa" + e.getDisplayname();
-            String priceLine = price > 0.0 ? "ยงe" + price : langConfig.getConfig().getString("priceFree").replace("&","ยง");
-            String accessLine = hasAccess(player, e) ? langConfig.getConfig().getString("yesAccess").replace("&","ยง") : langConfig.getConfig().getString("noAccess").replace("&","ยง");
-            String idLine = "ยง7ID: "+String.valueOf(e.getId());
+            String editLine = langConfig.getConfig().getString("setTo").replace("&","ง") + " งa" + e.getDisplayname();
+            String priceLine = price > 0.0 ? "งe" + price : langConfig.getConfig().getString("priceFree").replace("&","ง");
+            String accessLine = hasAccess(player, e) ? langConfig.getConfig().getString("yesAccess").replace("&","ง") : langConfig.getConfig().getString("noAccess").replace("&","ง");
+            String idLine = "ง7ID: "+String.valueOf(e.getId());
             
             // Editing the price line
-            priceLine += (player.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || player.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " ยงaยงo("+ langConfig.getConfig().getString("freeForYou").replace("&","ยง") +")" : "";
+            priceLine += (player.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || player.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " งaงo("+ langConfig.getConfig().getString("freeForYou").replace("&","ง") +")" : "";
             
             // Putting the item in the GUI
             if(isEconomyEnabled && mainConfig.getConfig().getBoolean("Settings.ShowCostInLore")) {
                 if(mainConfig.getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setSlot(j, e.getItem(), "ยง6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","ยง") + " " + priceLine, accessLine, idLine);
+                    gui.setSlot(j, e.getItem(), "ง6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","ง") + " " + priceLine, accessLine, idLine);
                 } else {
-                    gui.setSlot(j, e.getItem(), "ยง6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","ยง") + " " + priceLine, idLine);
+                    gui.setSlot(j, e.getItem(), "ง6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","ง") + " " + priceLine, idLine);
                 }
             } else {
                 if(mainConfig.getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setSlot(j, e.getItem(), "ยง6" + e.getDisplayname(), editLine, accessLine, idLine);
+                    gui.setSlot(j, e.getItem(), "ง6" + e.getDisplayname(), editLine, accessLine, idLine);
                 } else {
-                    gui.setSlot(j, e.getItem(), "ยง6" + e.getDisplayname(), editLine, idLine);
+                    gui.setSlot(j, e.getItem(), "ง6" + e.getDisplayname(), editLine, idLine);
                 }
             }
             j++;
@@ -208,12 +208,12 @@ public class Main extends JavaPlugin{
             // If there is no economy hook
             if (isEconomyEnabled) 
             {
-            	s = langConfig.getConfig().getString("yourBalance").replace("&","ยง") + " ยงe" + Math.round(economy.getBalance(Bukkit.getPlayer((player.getName()))) * 100.0) / 100.0;
+            	s = langConfig.getConfig().getString("yourBalance").replace("&","ง") + " งe" + Math.round(economy.getBalance(Bukkit.getPlayer((player.getName()))) * 100.0) / 100.0;
             }
             else
-            	s = "ยงcEconomy is not enabled!";
+            	s = "งcEconomy is not enabled!";
             // Setting of the correct item
-            gui.setSlot(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "ยงb"+langConfig.getConfig().getString("balance").replace("&","ยง"), s);
+            gui.setSlot(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "งb"+langConfig.getConfig().getString("balance").replace("&","ง"), s);
         }
         // Show the GUI to the player
         gui.show(player);

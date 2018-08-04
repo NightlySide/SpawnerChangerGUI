@@ -84,14 +84,14 @@ public class Listeners implements Listener{
 		ItemMeta meta = spawner.getItemMeta();
 		
 		// Setting name and lore
-		meta.setDisplayName("ยง6Mob spawner : ยงe"+mobtype.getName());
-		meta.setLore(Arrays.asList("ยง2Spawns : "+mobtype.getName(), "ยง2Right-click to modify", "ยง7ID: "+String.valueOf(mobtype.getId())));
+		meta.setDisplayName("ง6Mob spawner : งe"+mobtype.getName());
+		meta.setLore(Arrays.asList("ง2Spawns : "+mobtype.getName(), "ง2Right-click to modify", "ง7ID: "+String.valueOf(mobtype.getId())));
 		spawner.setItemMeta(meta);
 		//spawner.setDurability((short) mobtype.getId());
 		
 		// If the player needs silktouch : drop only if it has the correct enchantment
 		boolean requireSilkTouch = context.mainConfig.getConfig().getBoolean("Settings.RequireSilkTouch");
-		player.sendMessage(String.valueOf(requireSilkTouch));
+		//player.sendMessage(String.valueOf(requireSilkTouch));
 		if (requireSilkTouch && tool.containsEnchantment(Enchantment.SILK_TOUCH))
 			player.getWorld().dropItem(block.getLocation(), spawner);
 		

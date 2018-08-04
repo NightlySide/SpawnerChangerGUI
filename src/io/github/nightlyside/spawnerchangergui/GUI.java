@@ -126,7 +126,7 @@ public class GUI implements Listener {
 					if (!hasItem)
 					{
 						// If the player doesn't have the item
-						player.sendMessage(context.langConfig.getConfig().getString("noeggininv").replace("&", "ยง"));
+						player.sendMessage(context.langConfig.getConfig().getString("noeggininv").replace("&", "ง"));
 						return;
 					}
 				}
@@ -138,13 +138,13 @@ public class GUI implements Listener {
 				
 				if (mobtype == null)
 				{
-					player.sendMessage(context.langConfig.getConfig().getString("mobnotfound").replace("&", "ยง"));
+					player.sendMessage(context.langConfig.getConfig().getString("mobnotfound").replace("&", "ง"));
 					return;
 				}
 				
 				// Change item in spawner (to be done)
 				player.sendMessage(context.langConfig.getConfig().getString("changeType")
-						.replace("&", "ยง")
+						.replace("&", "ง")
 						.replace("%oldmob%", SpawnTypes.fromType(spawner.getSpawnedType()).getDisplayname())
 						.replace("%newmob%", mobtype.getDisplayname()));
 				spawner.setSpawnedType(mobtype.getType());

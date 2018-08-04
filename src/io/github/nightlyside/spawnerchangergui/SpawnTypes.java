@@ -42,8 +42,8 @@ public enum SpawnTypes {
     ENDERCRYSTAL			(EntityType.ENDER_CRYSTAL, 			"Ender_Crystal", 		368,  	0),
     EXPERIENCEORB			(EntityType.EXPERIENCE_ORB, 		"Experience_Orb", 		384,  	0),
 	ELDER_GUARDIAN			(EntityType.ELDER_GUARDIAN, 		"Elder_Guardian", 		19, 	0),
-	EVOKER					(EntityType.EVOKER, 				"Evoker", 				383, 	84),
-	LLAMA					(EntityType.LLAMA, 					"Llama", 				383, 	103),
+	EVOKER					(EntityType.EVOKER, 				"Evoker", 				383, 	34),
+	LLAMA					(EntityType.LLAMA, 					"Llama", 				35, 	1),
 	GUARDIAN				(EntityType.GUARDIAN,				"Guardian", 			383, 	68),
 	SHULKER					(EntityType.SHULKER,				"Shulker",				229,	0);
     
