@@ -180,7 +180,7 @@ public class Main extends JavaPlugin{
             String editLine = langConfig.getConfig().getString("setTo").replace("&","§") + " §a" + e.getDisplayname();
             String priceLine = price > 0.0 ? "§e" + price : langConfig.getConfig().getString("priceFree").replace("&","§");
             String accessLine = hasAccess(player, e) ? langConfig.getConfig().getString("yesAccess").replace("&","§") : langConfig.getConfig().getString("noAccess").replace("&","§");
-            String idLine = "§7ID: "+String.valueOf(e.getId());
+            String matLine = "§7Material: "+String.valueOf(e.getMaterial());
             
             // Editing the price line
             priceLine += (player.hasPermission("spawnerchangergui.eco.bypass." + e.getName().toLowerCase()) || player.hasPermission("spawnerchangergui.eco.bypass.*")) && price > 0.0 ? " §a§o("+ langConfig.getConfig().getString("freeForYou").replace("&","§") +")" : "";
@@ -188,15 +188,15 @@ public class Main extends JavaPlugin{
             // Putting the item in the GUI
             if(isEconomyEnabled && mainConfig.getConfig().getBoolean("Settings.ShowCostInLore")) {
                 if(mainConfig.getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","§") + " " + priceLine, accessLine, idLine);
+                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","§") + " " + priceLine, accessLine, matLine);
                 } else {
-                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","§") + " " + priceLine, idLine);
+                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, langConfig.getConfig().getString("price").replace("&","§") + " " + priceLine, matLine);
                 }
             } else {
                 if(mainConfig.getConfig().getBoolean("Settings.ShowAccessInLore")) {
-                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, accessLine, idLine);
+                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, accessLine, matLine);
                 } else {
-                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, idLine);
+                    gui.setSlot(j, e.getItem(), "§6" + e.getDisplayname(), editLine, matLine);
                 }
             }
             j++;
@@ -213,7 +213,7 @@ public class Main extends JavaPlugin{
             else
             	s = "§cEconomy is not enabled!";
             // Setting of the correct item
-            gui.setSlot(44, new ItemStack(Material.SKULL_ITEM, 1, (byte)3), "§b"+langConfig.getConfig().getString("balance").replace("&","§"), s);
+            gui.setSlot(44, new ItemStack(Material.PLAYER_HEAD, 1, (byte)3), "§b"+langConfig.getConfig().getString("balance").replace("&","§"), s);
         }
         // Show the GUI to the player
         gui.show(player);

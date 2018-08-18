@@ -86,7 +86,6 @@ public class GUI implements Listener {
 	/*
 	 *  Click item in GUI handler 
 	 */
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onClick(InventoryClickEvent event)
 	{
@@ -118,23 +117,29 @@ public class GUI implements Listener {
 				if (context.mainConfig.getConfig().getBoolean("Settings.ItemRequirement.enabled"))
 				{
 					// Get the item's material and amount
-					Material reqItem = Material.getMaterial(context.mainConfig.getConfig().getInt("Settings.ItemRequirement.item_id"));
+					Material reqItem = Material.getMaterial(context.mainConfig.getConfig().getString("Settings.ItemRequirement.item_material"));
 					int amount = context.mainConfig.getConfig().getInt("Settings.ItemRequirement.amount");
+					
+					if (reqItem == null)
+					{
+						Main.log.severe("[SpawnerChangerGUI] Item requirement's material not understood !! Aborting operation");
+						return;
+					}
 					
 					// Check and remove the required item
 					boolean hasItem = Utils.consumeItem(player, amount, reqItem);
 					if (!hasItem)
 					{
 						// If the player doesn't have the item
-						player.sendMessage(context.langConfig.getConfig().getString("noeggininv").replace("&", "§"));
+						player.sendMessage(context.langConfig.getConfig().getString("noreqitemininv").replace("&", "§"));
 						return;
 					}
 				}
 				
 				// Get the mobtype from the item
 				int numberoflines = event.getInventory().getItem(slot).getItemMeta().getLore().size();
-				String mobid = event.getInventory().getItem(slot).getItemMeta().getLore().get(numberoflines-1).split(" ")[1];
-				SpawnTypes mobtype = SpawnTypes.fromID(Integer.valueOf(mobid));
+				Material mobMat = Material.getMaterial(event.getInventory().getItem(slot).getItemMeta().getLore().get(numberoflines-1).split(" ")[1]);
+				SpawnTypes mobtype = SpawnTypes.fromMaterial(mobMat);
 				
 				if (mobtype == null)
 				{

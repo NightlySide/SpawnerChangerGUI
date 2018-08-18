@@ -1,7 +1,7 @@
 # -------------------- Spawner Changer GUI Config -------------------- #
 #                                                                      #
 #   author  : Nightltside                                              # 
-#   version : 1.5.5                                                    #
+#   version : 1.6.0                                                    #
 #                                                                      #
 # -------------------------------------------------------------------- #
 Settings:
@@ -22,7 +22,7 @@ Settings:
   # Does the player require an item to change the spawner's type
   ItemRequirement:
     enabled: false
-    item_id: 344
+    item_material: EGG
     amount: 1
     
 # Mob prices : the amount of money a player needs to pay in order to change 

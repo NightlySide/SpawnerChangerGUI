@@ -30,15 +30,14 @@ public class Listeners implements Listener{
 	}
 	
 	@EventHandler
-	@SuppressWarnings("deprecation")
     public void onPlaceSpawner(BlockPlaceEvent event)
     {
     	Block block = event.getBlockPlaced();
         Player player = event.getPlayer();
-		ItemStack itemblock = player.getItemInHand();
+		ItemStack itemblock = player.getInventory().getItemInMainHand();
         
         // Check if everything is fine
-    	if (block == null || block.getType() != Material.MOB_SPAWNER)
+    	if (block == null || block.getType() != Material.SPAWNER)
     		return;
     	if (!context.canOpenAtLoc(player, block.getLocation()))
     		return;
@@ -46,21 +45,23 @@ public class Listeners implements Listener{
     	CreatureSpawner spawner = (CreatureSpawner) block.getState();
     	if (itemblock.getItemMeta().hasLore())
     	{
+    		//player.sendMessage("Its a custom spawner");
     		int numberoflines = itemblock.getItemMeta().getLore().size();
-    		int id = Integer.parseInt(itemblock.getItemMeta().getLore().get(numberoflines-1).split(" ")[1]);
-    		//player.sendMessage(String.valueOf(id)); // DEBUG
-    		SpawnTypes mobtype = SpawnTypes.fromID(id);
+    		Material mat = Material.getMaterial(itemblock.getItemMeta().getLore().get(numberoflines-1).split(" ")[1]);
+    		SpawnTypes mobtype = SpawnTypes.fromMaterial(mat);
+    		//player.sendMessage(mobtype.getDisplayname());
     		spawner.setSpawnedType(mobtype.getType());
+    		//player.sendMessage(spawner.getSpawnedType().toString());
+    		spawner.update();
     	}
     }
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onBreakSpawner(BlockBreakEvent event) 
 	{	
     	Block block = event.getBlock();
     	Player player = event.getPlayer();
-    	ItemStack tool = player.getItemInHand();
+    	ItemStack tool = player.getInventory().getItemInMainHand();
     	
     	// Check if everything is fine
     	if (!context.canOpenAtLoc(player, block.getLocation()))
@@ -68,7 +69,7 @@ public class Listeners implements Listener{
     		event.setCancelled(true);
     		return;
     	}
-    	if (block == null || block.getType() != Material.MOB_SPAWNER)
+    	if (block == null || block.getType() != Material.SPAWNER)
     		return;
     	if (player.getGameMode() == GameMode.CREATIVE)
     		return;
@@ -78,14 +79,14 @@ public class Listeners implements Listener{
     	event.setExpToDrop(context.mainConfig.getConfig().getInt("Settings.DroppedXPonBreak"));
     	
     	// Setting dropped bloc caracteristics
-		ItemStack spawner = new ItemStack(Material.MOB_SPAWNER, 1);
+		ItemStack spawner = new ItemStack(Material.SPAWNER, 1);
 		CreatureSpawner spawnerBlock = (CreatureSpawner) block.getState();
 		SpawnTypes mobtype = SpawnTypes.fromType(spawnerBlock.getSpawnedType());
 		ItemMeta meta = spawner.getItemMeta();
 		
 		// Setting name and lore
 		meta.setDisplayName("§6Mob spawner : §e"+mobtype.getName());
-		meta.setLore(Arrays.asList("§2Spawns : "+mobtype.getName(), "§2Right-click to modify", "§7ID: "+String.valueOf(mobtype.getId())));
+		meta.setLore(Arrays.asList("§2Spawns : "+mobtype.getName(), "§2Right-click to modify", "§7ID: "+mobtype.getMaterial().toString()));
 		spawner.setItemMeta(meta);
 		//spawner.setDurability((short) mobtype.getId());
 		
@@ -115,7 +116,7 @@ public class Listeners implements Listener{
     	Player player = event.getPlayer();
     	
     	// Check if the block is legit
-    	if (block == null || block.getType() != Material.MOB_SPAWNER)
+    	if (block == null || block.getType() != Material.SPAWNER)
     		return;
     	// Check if the GUI is not already open
     	if (Main.openGUIs.contains(player.getName()))

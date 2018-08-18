@@ -1,74 +1,61 @@
 package io.github.nightlyside.spawnerchangergui;
 
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public enum SpawnTypes {
-    CREEPER					(EntityType.CREEPER, 				"Creeper", 				383, 	50),
-    SKELETON				(EntityType.SKELETON, 				"Skeleton", 			383, 	51),
-    SPIDER					(EntityType.SPIDER, 				"Spider", 				383, 	52),
-    GIANT					(EntityType.GIANT, 					"Giant", 				383, 	54),
-    ZOMBIE					(EntityType.ZOMBIE, 				"Zombie", 				383, 	54),
-    SLIME					(EntityType.SLIME, 					"Slime", 				383, 	55),
-    GHAST					(EntityType.GHAST, 					"Ghast", 				385, 	0),
-    PIG_ZOMBIE				(EntityType.PIG_ZOMBIE, 			"Pig_Zombie", 			383, 	57),
-    ENDERMAN				(EntityType.ENDERMAN, 				"Enderman", 			383, 	58),
-    CAVE_SPIDER				(EntityType.CAVE_SPIDER, 			"Cave_Spider", 			383, 	59),
-    SILVERFISH				(EntityType.SILVERFISH, 			"Silverfish", 			383, 	60),
-    BLAZE					(EntityType.BLAZE, 					"Blaze", 				383, 	61),
-    MAGMA_CUBE				(EntityType.MAGMA_CUBE, 			"Magma_Cube", 			383, 	62),
-    ENDER_DRAGON			(EntityType.ENDER_DRAGON, 			"Ender_Dragon", 		122, 	0),
-    WITHER					(EntityType.WITHER, 				"Wither", 				397, 	1),
-    BAT						(EntityType.BAT, 					"Bat", 					383, 	65),
-    WITCH					(EntityType.WITCH, 					"Witch", 				383, 	66),
-    PIG						(EntityType.PIG, 					"Pig",					383, 	90),
-    SHEEP					(EntityType.SHEEP, 					"Sheep", 				383, 	91),
-    COW						(EntityType.COW, 					"Cow", 					383, 	92),
-    CHICKEN					(EntityType.CHICKEN, 				"Chicken", 				383, 	93),
-    SQUID					(EntityType.SQUID, 					"Squid", 				383, 	94),
-    WOLF					(EntityType.WOLF, 					"Wolf", 				383, 	95),
-    MUSHROOM_COW			(EntityType.MUSHROOM_COW, 			"Mooshroom", 			383, 	96),
-    SNOWMAN					(EntityType.SNOWMAN, 				"Snow_Golem", 			332, 	0),
-    OCELOT					(EntityType.OCELOT, 				"Ocelot", 				383, 	98),
-    IRON_GOLEM				(EntityType.IRON_GOLEM, 			"Iron_Golem", 			265, 	0),
-    HORSE					(EntityType.HORSE, 					"Horse", 				383, 	100),
-    VILLAGER				(EntityType.VILLAGER, 				"Villager", 			383, 	120),
-    BOAT					(EntityType.BOAT, 					"Boat", 				333, 	0),
-    MINECART				(EntityType.MINECART, 				"Minecart", 			328, 	0),
-    MINECART_CHEST			(EntityType.MINECART_CHEST, 		"Chest_Minecart", 		342,  	0),
-    MINECART_FURNACE		(EntityType.MINECART_FURNACE, 		"Furnace_Minecart",		343,  	0),
-    MINECART_TNT			(EntityType.MINECART_TNT, 			"Tnt_Minecart", 		407,  	0),
-    MINECART_HOPPER			(EntityType.MINECART_HOPPER, 		"Hopper_Minecart", 		408,  	0),
-    ENDERCRYSTAL			(EntityType.ENDER_CRYSTAL, 			"Ender_Crystal", 		368,  	0),
-    EXPERIENCEORB			(EntityType.EXPERIENCE_ORB, 		"Experience_Orb", 		384,  	0),
-	ELDER_GUARDIAN			(EntityType.ELDER_GUARDIAN, 		"Elder_Guardian", 		19, 	0),
-	EVOKER					(EntityType.EVOKER, 				"Evoker", 				383, 	34),
-	LLAMA					(EntityType.LLAMA, 					"Llama", 				35, 	1),
-	GUARDIAN				(EntityType.GUARDIAN,				"Guardian", 			383, 	68),
-	SHULKER					(EntityType.SHULKER,				"Shulker",				229,	0);
+    CREEPER					(EntityType.CREEPER, 				"Creeper", 				Material.CREEPER_HEAD),
+    SKELETON				(EntityType.SKELETON, 				"Skeleton", 			Material.SKELETON_SKULL),
+    SPIDER					(EntityType.SPIDER, 				"Spider", 				Material.SPIDER_SPAWN_EGG),
+    GIANT					(EntityType.GIANT, 					"Giant", 				Material.ZOMBIE_SPAWN_EGG),
+    ZOMBIE					(EntityType.ZOMBIE, 				"Zombie", 				Material.ROTTEN_FLESH),
+    SLIME					(EntityType.SLIME, 					"Slime", 				Material.SLIME_BLOCK),
+    GHAST					(EntityType.GHAST, 					"Ghast", 				Material.GHAST_TEAR),
+    PIG_ZOMBIE				(EntityType.PIG_ZOMBIE, 			"Pig_Zombie", 			Material.GOLD_NUGGET),
+    ENDERMAN				(EntityType.ENDERMAN, 				"Enderman", 			Material.ENDER_EYE),
+    CAVE_SPIDER				(EntityType.CAVE_SPIDER, 			"Cave_Spider", 			Material.STRING),
+    SILVERFISH				(EntityType.SILVERFISH, 			"Silverfish", 			Material.MOSSY_STONE_BRICKS),
+    BLAZE					(EntityType.BLAZE, 					"Blaze", 				Material.BLAZE_ROD),
+    MAGMA_CUBE				(EntityType.MAGMA_CUBE, 			"Magma_Cube", 			Material.MAGMA_CREAM),
+    ENDER_DRAGON			(EntityType.ENDER_DRAGON, 			"Ender_Dragon", 		Material.DRAGON_HEAD),
+    WITHER					(EntityType.WITHER, 				"Wither", 				Material.NETHER_STAR),
+    BAT						(EntityType.BAT, 					"Bat", 					Material.ELYTRA),
+    WITCH					(EntityType.WITCH, 					"Witch", 				Material.POTION),
+    PIG						(EntityType.PIG, 					"Pig",					Material.PIG_SPAWN_EGG),
+    SHEEP					(EntityType.SHEEP, 					"Sheep", 				Material.WHITE_WOOL),
+    COW						(EntityType.COW, 					"Cow", 					Material.LEATHER),
+    CHICKEN					(EntityType.CHICKEN, 				"Chicken", 				Material.EGG),
+    SQUID					(EntityType.SQUID, 					"Squid", 				Material.INK_SAC),
+    WOLF					(EntityType.WOLF, 					"Wolf", 				Material.BONE),
+    MUSHROOM_COW			(EntityType.MUSHROOM_COW, 			"Mooshroom", 			Material.RED_MUSHROOM),
+    SNOWMAN					(EntityType.SNOWMAN, 				"Snow_Golem", 			Material.SNOWBALL),
+    OCELOT					(EntityType.OCELOT, 				"Ocelot", 				Material.OCELOT_SPAWN_EGG),
+    IRON_GOLEM				(EntityType.IRON_GOLEM, 			"Iron_Golem", 			Material.IRON_BLOCK),
+    HORSE					(EntityType.HORSE, 					"Horse", 				Material.HORSE_SPAWN_EGG),
+    VILLAGER				(EntityType.VILLAGER, 				"Villager", 			Material.EMERALD),
+    BOAT					(EntityType.BOAT, 					"Boat", 				Material.OAK_BOAT),
+    MINECART				(EntityType.MINECART, 				"Minecart", 			Material.MINECART),
+    MINECART_CHEST			(EntityType.MINECART_CHEST, 		"Chest_Minecart", 		Material.CHEST_MINECART),
+    MINECART_FURNACE		(EntityType.MINECART_FURNACE, 		"Furnace_Minecart",		Material.FURNACE_MINECART),
+    MINECART_TNT			(EntityType.MINECART_TNT, 			"Tnt_Minecart", 		Material.TNT_MINECART),
+    MINECART_HOPPER			(EntityType.MINECART_HOPPER, 		"Hopper_Minecart", 		Material.HOPPER_MINECART),
+    ENDERCRYSTAL			(EntityType.ENDER_CRYSTAL, 			"Ender_Crystal", 		Material.END_CRYSTAL),
+    EXPERIENCEORB			(EntityType.EXPERIENCE_ORB, 		"Experience_Orb", 		Material.EXPERIENCE_BOTTLE),
+	ELDER_GUARDIAN			(EntityType.ELDER_GUARDIAN, 		"Elder_Guardian", 		Material.GUARDIAN_SPAWN_EGG),
+	EVOKER					(EntityType.EVOKER, 				"Evoker", 				Material.EVOKER_SPAWN_EGG),
+	LLAMA					(EntityType.LLAMA, 					"Llama", 				Material.BROWN_WOOL),
+	GUARDIAN				(EntityType.GUARDIAN,				"Guardian", 			Material.GUARDIAN_SPAWN_EGG),
+	SHULKER					(EntityType.SHULKER,				"Shulker",				Material.SHULKER_BOX);
     
     private final EntityType type;
     private final String name;
-    private final int item;
-    private final byte data;
+    private final Material material;
     
-    private SpawnTypes(EntityType type, String name, int itemId, int data) {
+    private SpawnTypes(EntityType type, String name, Material materialName) {
         this.type = type;
         this.name = name;
-        this.item = itemId;
-        this.data = (byte) data;
-    }
-    
-    public int getIdFromData(int item, int data)
-    {
-    	String sitem = String.valueOf(item);
-    	String sdata = String.valueOf(data);
-    	String sid = sitem+sdata;
-    	return Integer.parseInt(sid);
-    }
-    
-    public int getId() {
-    	return getIdFromData(item, data);
+        this.material = materialName;
     }
     
     public String getName() {
@@ -79,21 +66,16 @@ public enum SpawnTypes {
     	return name.replace("_", " ");
     }
     
-    public byte getData() {
-        return data;
-    }
-    
-    public int getItemId() {
-        return item;
+    public Material getMaterial() {
+        return material;
     }
     
     public EntityType getType() {
         return type;
     }
     
-    @SuppressWarnings("deprecation")
 	public ItemStack getItem() {
-        return new ItemStack(item, 1, data);
+        return new ItemStack(material, 1);
     }
     
     public static SpawnTypes fromType(EntityType type) {
@@ -105,9 +87,9 @@ public enum SpawnTypes {
         return null;
     }
     
-    public static SpawnTypes fromID(int id) {
+    public static SpawnTypes fromMaterial(Material mat) {
     	for (SpawnTypes e : values()) {
-    		if(e.getId() == id)
+    		if(e.getMaterial() == mat)
     			return e;
     	}
     	return null;
